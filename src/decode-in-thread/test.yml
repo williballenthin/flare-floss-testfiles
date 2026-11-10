@@ -1,0 +1,31 @@
+Test Name: test-decode-in-thread
+Test Purpose: Demonstrate extraction of a string decoded by a thread start routine, which nothing in the program calls.
+Decoding algorithm: single byte xor
+Input buffer location: global
+Output buffer location: global
+
+Decoded strings:
+    - http://evil.example
+
+Source files:
+    - test-decode-in-thread.c
+
+Output Files:
+    Linux:
+        32bit: bin/test-decode-in-thread
+    Windows:
+        32bit: bin/test-decode-in-thread.exe
+        64bit: bin/test-decode-in-thread64.exe
+
+Build instructions (Windows): |
+    cl.exe test-decode-in-thread.c /Febin/test-decode-in-thread.exe
+
+Build instructions (Linux): |
+    clang test-decode-in-thread.c -o bin/test-decode-in-thread
+
+Build instructions (Cross compile for Windows on Linux): |
+    i686-w64-mingw32-clang test-decode-in-thread.c -o bin/test-decode-in-thread.exe
+    x86_64-w64-mingw32-clang test-decode-in-thread.c -o bin/test-decode-in-thread64.exe
+
+Xfail:
+    - all
