@@ -1,0 +1,42 @@
+Test Name: test-go-gobfuscate
+Test Purpose: "Demonstrate extraction of string literals encrypted by gobfuscate: each literal becomes a closure, called in place, that xors a ciphertext with a random mask of the same length into a new heap slice."
+Decoding algorithm: "gobfuscate: xor with a per-string random mask (one-time pad)"
+Input buffer location: global
+Output buffer location: heap
+
+Decoded strings:
+    - "go-canary::alpha::c2.example.net:8443/api/v1/beacon"
+    - "go-canary::bravo::C:\\ProgramData\\Updater\\config.json"
+    - "go-canary::charlie::Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    - "go-canary::delta::SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+    - "go-canary::echo::session-key-4f9a"
+    - "go-canary::foxtrot::cmd.exe /c whoami /all"
+    - "go-canary::golf::https://cdn.example.org/update/agent.bin"
+    - "go-canary::hotel::%APPDATA%\\Microsoft\\Crypto\\keys.dat"
+    - "go-canary::india::POST /gate.php HTTP/1.1"
+    - "go-canary::juliett::wallet.dat"
+
+Source files:
+    - main.go
+    - build.sh
+
+Output Files:
+    Linux:
+        64bit: bin/test-go-gobfuscate
+    Windows:
+        32bit: bin/test-go-gobfuscate.exe
+        64bit: bin/test-go-gobfuscate64.exe
+
+Build instructions (Windows): |
+    (gobfuscate needs GOPATH mode and a POSIX shell; see build.sh)
+    sh build.sh go bin/test-go-gobfuscate.exe windows 386
+
+Build instructions (Linux): |
+    ./build.sh go bin/test-go-gobfuscate linux amd64
+
+Build instructions (Cross compile for Windows on Linux): |
+    ./build.sh go bin/test-go-gobfuscate.exe windows 386
+    ./build.sh go bin/test-go-gobfuscate64.exe windows amd64
+
+Xfail:
+    - all

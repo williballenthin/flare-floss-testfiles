@@ -1,0 +1,38 @@
+Test Name: test-go-decode-base64
+Test Purpose: "Demonstrate extraction of strings encoded with base64 using a custom alphabet (encoding/base64), decoded at runtime."
+Decoding algorithm: base64 (custom alphabet)
+Input buffer location: global
+Output buffer location: heap
+
+Decoded strings:
+    - "go-canary::alpha::c2.example.net:8443/api/v1/beacon"
+    - "go-canary::bravo::C:\\ProgramData\\Updater\\config.json"
+    - "go-canary::charlie::Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    - "go-canary::delta::SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+    - "go-canary::echo::session-key-4f9a"
+
+Source files:
+    - main.go
+    - go.mod
+
+Output Files:
+    Linux:
+        64bit: bin/test-go-decode-base64
+    Windows:
+        32bit: bin/test-go-decode-base64.exe
+        64bit: bin/test-go-decode-base6464.exe
+
+Build instructions (Windows): |
+    set CGO_ENABLED=0
+    set GOARCH=386
+    go build -trimpath -ldflags="-s -w -buildid=" -o bin/test-go-decode-base64.exe .
+
+Build instructions (Linux): |
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w -buildid=" -o bin/test-go-decode-base64 .
+
+Build instructions (Cross compile for Windows on Linux): |
+    CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -trimpath -ldflags="-s -w -buildid=" -o bin/test-go-decode-base64.exe .
+    CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -trimpath -ldflags="-s -w -buildid=" -o bin/test-go-decode-base6464.exe .
+
+Xfail:
+    - all

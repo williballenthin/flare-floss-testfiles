@@ -1,0 +1,43 @@
+Test Name: test-go-garble
+Test Purpose: "Demonstrate extraction of string literals obfuscated by garble v0.18's -literals: each literal is decoded by its own top-level function, reached through a tree of global structs of function values (a proxy), with part of the key passed by the caller."
+Decoding algorithm: "garble v0.18.0 -literals: simple, swap, split, shuffle and seed obfuscators"
+Input buffer location: global
+Output buffer location: heap
+
+Decoded strings:
+    - "go-canary::alpha::c2.example.net:8443/api/v1/beacon"
+    - "go-canary::bravo::C:\\ProgramData\\Updater\\config.json"
+    - "go-canary::charlie::Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    - "go-canary::delta::SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+    - "go-canary::echo::session-key-4f9a"
+    - "go-canary::foxtrot::cmd.exe /c whoami /all"
+    - "go-canary::golf::https://cdn.example.org/update/agent.bin"
+    - "go-canary::hotel::%APPDATA%\\Microsoft\\Crypto\\keys.dat"
+    - "go-canary::india::POST /gate.php HTTP/1.1"
+    - "go-canary::juliett::wallet.dat"
+
+Source files:
+    - main.go
+    - go.mod
+
+Output Files:
+    Linux:
+        64bit: bin/test-go-garble
+    Windows:
+        32bit: bin/test-go-garble.exe
+        64bit: bin/test-go-garble64.exe
+
+Build instructions (Windows): |
+    set CGO_ENABLED=0
+    set GOARCH=386
+    garble -literals -seed=HAAAAAAAAAA build -trimpath -ldflags="-s -w -buildid=" -o bin/test-go-garble.exe .
+
+Build instructions (Linux): |
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 garble -literals -seed=HAAAAAAAAAA build -trimpath -ldflags="-s -w -buildid=" -o bin/test-go-garble .
+
+Build instructions (Cross compile for Windows on Linux): |
+    CGO_ENABLED=0 GOOS=windows GOARCH=386 garble -literals -seed=HAAAAAAAAAA build -trimpath -ldflags="-s -w -buildid=" -o bin/test-go-garble.exe .
+    CGO_ENABLED=0 GOOS=windows GOARCH=amd64 garble -literals -seed=HAAAAAAAAAA build -trimpath -ldflags="-s -w -buildid=" -o bin/test-go-garble64.exe .
+
+Xfail:
+    - all
